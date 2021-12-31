@@ -24,7 +24,7 @@ jobs:
           version: 'latest'
 
       - name: Build
-        run: trunk build
+        run: trunk build --public-url /yew-cherry-online
 
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
