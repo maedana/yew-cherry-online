@@ -19,6 +19,7 @@ impl Component for Model {
     fn update(&mut self, _ctx: &Context<Self>, msg: Self::Message) -> bool {
         match msg {
             Msg::AddOne => {
+                log::info!("Clicked");
                 self.value += 1;
                 true
             }
@@ -52,7 +53,7 @@ impl Component for Model {
                   <div class="navbar-item">
                     <div class="field is-grouped">
                       <p class="control">
-                        <a class="button is-primary" href="#">
+                        <a class="button is-primary" href="#" onclick={link.callback(|_| Msg::AddOne)}>
                           <span>{ "ログイン" }</span>
                         </a>
                       </p>
@@ -77,5 +78,6 @@ impl Component for Model {
 }
 
 fn main() {
+    wasm_logger::init(wasm_logger::Config::default());
     yew::start_app::<Model>();
 }
