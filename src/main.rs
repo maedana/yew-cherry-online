@@ -28,16 +28,50 @@ impl Component for Model {
     fn view(&self, ctx: &Context<Self>) -> Html {
         let link = ctx.link();
         html! {
-          <section class="section">
-            <div class="container">
-              <h1 class="title">
-                { "Hello World" }
-              </h1>
-              <p class="subtitle">
-                { "My first website with " }<strong>{ "Bluma" }</strong>
-              </p>
-            </div>
-          </section>
+          <div>
+            <nav class="navbar is-transparent">
+              <div class="navbar-brand">
+                <a class="navbar-item is-size-3" href="/">
+                  { "Cherry Online" }
+                </a>
+                <div class="navbar-burger" data-target="navbarExampleTransparentExample">
+                  <span></span>
+                  <span></span>
+                  <span></span>
+                </div>
+              </div>
+
+              <div id="navbarExampleTransparentExample" class="navbar-menu">
+                <div class="navbar-start">
+                  <a class="navbar-item" href="/">
+                    { "Home" }
+                  </a>
+                </div>
+
+                <div class="navbar-end">
+                  <div class="navbar-item">
+                    <div class="field is-grouped">
+                      <p class="control">
+                        <a class="button is-primary" href="#">
+                          <span>{ "ログイン" }</span>
+                        </a>
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </nav>
+            <section class="section">
+              <div class="container">
+                <h1 class="title">
+                  { "Hello World" }
+                </h1>
+                <p class="subtitle">
+                  { "My first website with " }<strong>{ "Bluma" }</strong>
+                </p>
+              </div>
+            </section>
+          </div>
         }
     }
 }
