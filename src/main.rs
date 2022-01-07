@@ -1,7 +1,9 @@
 use yew::prelude::*;
 
+mod bindings;
+
 enum Msg {
-    AddOne,
+    LogIn,
 }
 
 struct Model {
@@ -18,8 +20,9 @@ impl Component for Model {
 
     fn update(&mut self, _ctx: &Context<Self>, msg: Self::Message) -> bool {
         match msg {
-            Msg::AddOne => {
-                log::info!("Clicked");
+            Msg::LogIn => {
+                let payload = bindings::get_payload();
+                log::info!("js_value: {}", payload);
                 self.value += 1;
                 true
             }
@@ -53,7 +56,7 @@ impl Component for Model {
                   <div class="navbar-item">
                     <div class="field is-grouped">
                       <p class="control">
-                        <a class="button is-primary" href="#" onclick={link.callback(|_| Msg::AddOne)}>
+                        <a class="button is-primary" href="#" onclick={link.callback(|_| Msg::LogIn)}>
                           <span>{ "ログイン" }</span>
                         </a>
                       </p>
