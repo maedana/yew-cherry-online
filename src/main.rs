@@ -1,21 +1,40 @@
+use reqwasm::http::Request;
+use serde::Deserialize;
 use yew::prelude::*;
 
 mod bindings;
 
 enum Msg {
     LogIn,
+    AuthConfigFetched(Result<AuthConfig, reqwasm::Error>),
 }
 
 struct Model {
     value: i64,
+    auth_config: Option<AuthConfig>,
+}
+
+#[derive(Deserialize)]
+struct AuthConfig {
+    domain: String,
+    client_id: String,
 }
 
 impl Component for Model {
     type Message = Msg;
     type Properties = ();
 
-    fn create(_ctx: &Context<Self>) -> Self {
-        Self { value: 0 }
+    fn create(ctx: &Context<Self>) -> Self {
+        let link = ctx.link().clone();
+        wasm_bindgen_futures::spawn_local(async move {
+            link.send_message(Msg::AuthConfigFetched(
+                async { Request::get("/auth_config.json").send().await?.json().await }.await,
+            ));
+        });
+        Self {
+            value: 0,
+            auth_config: None,
+        }
     }
 
     fn update(&mut self, _ctx: &Context<Self>, msg: Self::Message) -> bool {
@@ -24,6 +43,15 @@ impl Component for Model {
                 let payload = bindings::get_payload();
                 log::info!("js_value: {}", payload);
                 self.value += 1;
+                true
+            }
+            Msg::AuthConfigFetched(Ok(auth_config)) => {
+                log::info!("domain {}", auth_config.domain);
+                log::info!("client_id {}", auth_config.client_id);
+                true
+            }
+            Msg::AuthConfigFetched(Err(fetch_error)) => {
+                log::info!("error occured {}", fetch_error);
                 true
             }
         }
